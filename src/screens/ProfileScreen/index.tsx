@@ -1,76 +1,76 @@
-import React from "react";
+import React from 'react';
 import {
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
-} from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
-import Button from "../../components/Button";
-import Typography from "../../components/Typography";
-import { colors } from "../../constants";
-import OkResponse from "../../network/responses/OkResponse";
-import { normalizeX, normalizeY } from "../../utils/normalize";
-import API from "../../constants/api";
-import { AxiosResponse } from "axios";
-import ErrorResponse from "../../network/responses/ErrorResponse";
-import { authenticationActions } from "../../store/slices/authentication.slice";
-import { userActions } from "../../store/slices/user.slice";
-import {
-  LogoutIcon,
-  SettingsIcon,
-  UserCircleIcon
-} from "../../components/Icons";
-import { useSelectState } from "../../store/selectors";
+  View,
+} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useDispatch} from 'react-redux';
+import Button from '../../components/Button';
+import Typography from '../../components/Typography';
+import {colors} from '../../constants';
+import OkResponse from '../../network/responses/OkResponse';
+import {normalizeX, normalizeY} from '../../utils/normalize';
+import API from '../../constants/api';
+import {AxiosResponse} from 'axios';
+import ErrorResponse from '../../network/responses/ErrorResponse';
+import {authenticationActions} from '../../store/slices/authentication.slice';
+import {userActions} from '../../store/slices/user.slice';
+import {LogoutIcon, SettingsIcon, UserCircleIcon} from '../../components/Icons';
+import {useSelectState} from '../../store/selectors';
+import {StackScreenProps} from '@react-navigation/stack';
+import {RootStackParams} from '../../../types';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: normalizeX(24),
-    paddingBottom: normalizeY(100)
+    paddingBottom: normalizeY(100),
   },
   rowItem: {
-    width: "100%",
+    width: '100%',
     height: normalizeY(50),
     borderRadius: normalizeY(6),
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: normalizeX(16),
     shadowColor: colors.grey,
-    shadowOffset: { width: 1, height: 1 },
+    shadowOffset: {width: 1, height: 1},
     shadowOpacity: 0.3,
     shadowRadius: 8,
     marginBottom: normalizeY(14),
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
   profile: {
-    width: "100%",
+    width: '100%',
     height: normalizeY(150),
     borderRadius: normalizeY(12),
     shadowColor: colors.grey,
-    shadowOffset: { width: 1, height: 1 },
+    shadowOffset: {width: 1, height: 1},
     shadowOpacity: 0.3,
     shadowRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
     backgroundColor: colors.white,
     marginTop: normalizeY(24),
     padding: normalizeY(16),
-    marginBottom: normalizeY(24)
-  }
+    marginBottom: normalizeY(24),
+  },
 });
 
-const ProfileScreen = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const { user } = useSelectState();
+interface Props extends StackScreenProps<RootStackParams, 'ProfileScreen'> {}
 
-  const { top } = useSafeAreaInsets();
+const ProfileScreen = (props: Props) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const {user} = useSelectState();
+
+  const {top} = useSafeAreaInsets();
   const dispatch = useDispatch();
 
   const signOut = async () => {
@@ -81,7 +81,7 @@ const ProfileScreen = () => {
 
     try {
       const response = await API.client.get<any, AxiosResponse<OkResponse>>(
-        "/user/sign-out"
+        '/user/sign-out',
       );
       dispatch(authenticationActions.signOut());
       dispatch(userActions.signOut());
@@ -96,18 +96,14 @@ const ProfileScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
+    <KeyboardAvoidingView style={{flex: 1}} behavior="height">
       <ScrollView
         contentContainerStyle={{
           flex: 1,
           paddingTop: normalizeY(24) + top,
-          paddingHorizontal: normalizeX(24)
+          paddingHorizontal: normalizeX(24),
         }}
-        style={{ backgroundColor: colors.white }}
-      >
-        <Typography variant="h2" color={colors.primary} fontWeight={600}>
-          ProfileScreen
-        </Typography>
+        style={{backgroundColor: colors.white}}>
         <View style={styles.profile}>
           <UserCircleIcon
             width={normalizeY(42)}
@@ -117,15 +113,17 @@ const ProfileScreen = () => {
           <Typography
             variant="h1"
             color={colors.black}
-            style={{ marginTop: normalizeY(6) }}
-          >
+            style={{marginTop: normalizeY(6)}}>
             {`${user.firstName} ${user.lastName}`}
           </Typography>
           <Typography variant="sm" color={colors.darkgrey}>
             {user.email}
           </Typography>
         </View>
-        <TouchableOpacity activeOpacity={0.8} style={styles.rowItem}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.rowItem}
+          onPress={() => props.navigation.navigate('UpdateProfileScreen')}>
           <SettingsIcon
             width={normalizeY(18)}
             height={normalizeY(18)}
@@ -134,16 +132,14 @@ const ProfileScreen = () => {
           <Typography
             variant="h1"
             color={colors.black}
-            style={{ marginLeft: normalizeX(12) }}
-          >
-            Settings
+            style={{marginLeft: normalizeX(12)}}>
+            Update profile
           </Typography>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.rowItem}
-          onPress={signOut}
-        >
+          onPress={signOut}>
           <LogoutIcon
             width={normalizeY(18)}
             height={normalizeY(18)}
@@ -152,8 +148,7 @@ const ProfileScreen = () => {
           <Typography
             variant="h1"
             color={colors.black}
-            style={{ marginLeft: normalizeX(12) }}
-          >
+            style={{marginLeft: normalizeX(12)}}>
             Log out
           </Typography>
         </TouchableOpacity>
