@@ -3,4 +3,5 @@ export type RootStackParams = {
   SignUpScreen: undefined;
   ProfileScreen: undefined;
   UpdateProfileScreen: undefined;
+  ChangePasswordScreen: undefined;
 };

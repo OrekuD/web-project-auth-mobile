@@ -19,10 +19,16 @@ import {AxiosResponse} from 'axios';
 import ErrorResponse from '../../network/responses/ErrorResponse';
 import {authenticationActions} from '../../store/slices/authentication.slice';
 import {userActions} from '../../store/slices/user.slice';
-import {LogoutIcon, SettingsIcon, UserCircleIcon} from '../../components/Icons';
+import {
+  LockIcon,
+  LogoutIcon,
+  SettingsIcon,
+  UserCircleIcon,
+} from '../../components/Icons';
 import {useSelectState} from '../../store/selectors';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../../types';
+import {ActivityIndicator} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -139,8 +145,8 @@ const ProfileScreen = (props: Props) => {
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.rowItem}
-          onPress={signOut}>
-          <LogoutIcon
+          onPress={() => props.navigation.navigate('ChangePasswordScreen')}>
+          <LockIcon
             width={normalizeY(18)}
             height={normalizeY(18)}
             color={colors.black}
@@ -149,8 +155,26 @@ const ProfileScreen = (props: Props) => {
             variant="h1"
             color={colors.black}
             style={{marginLeft: normalizeX(12)}}>
-            Log out
+            Change password
           </Typography>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.rowItem}
+          onPress={signOut}>
+          <LogoutIcon
+            width={normalizeY(18)}
+            height={normalizeY(18)}
+            color={colors.black}
+            style={{marginRight: normalizeX(12)}}
+          />
+          {isLoading ? (
+            <ActivityIndicator size="small" color={colors.black} />
+          ) : (
+            <Typography variant="h1" color={colors.black}>
+              Log out
+            </Typography>
+          )}
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>

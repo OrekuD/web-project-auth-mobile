@@ -1,6 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
+import ChangePasswordScreen from './src/screens/ChangePasswordScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
@@ -20,6 +21,10 @@ const RootStackNavigation = () => {
       {authentication.isAuthenticated ? (
         <>
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+          <Stack.Screen
+            name="ChangePasswordScreen"
+            component={ChangePasswordScreen}
+          />
           <Stack.Screen
             name="UpdateProfileScreen"
             component={UpdateProfileScreen}
