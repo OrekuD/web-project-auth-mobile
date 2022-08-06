@@ -34,6 +34,7 @@ import SignUpRequest from '../../network/requests/SignUpRequest';
 import BackButton from '../../components/BackButton';
 import {useSelectState} from '../../store/selectors';
 import UpdateUserRequest from '../../network/requests/UpdateUserRequest';
+import validateEmail from '../../utils/validateEmail';
 
 const styles = StyleSheet.create({
   container: {
@@ -70,6 +71,12 @@ const UpdateProfileScreen = (props: Props) => {
     if (!canProceed || isLoading) {
       return;
     }
+
+    if (!validateEmail(email)) {
+      setEmailError('Please enter valid E-Mail Address');
+      return;
+    }
+
     setIsLoading(true);
 
     const payload: UpdateUserRequest = {
@@ -171,7 +178,20 @@ const UpdateProfileScreen = (props: Props) => {
                 value: email,
                 onChangeText: text => {
                   setEmail(text);
-                  setEmailError('');
+                  if (emailError.length > 0) {
+                    if (!validateEmail(text)) {
+                      setEmailError('Please enter valid E-Mail Address');
+                    } else {
+                      setEmailError('');
+                    }
+                  }
+                },
+                onBlur: () => {
+                  if (!validateEmail(email)) {
+                    setEmailError('Please enter valid E-Mail Address');
+                  } else {
+                    setEmailError('');
+                  }
                 },
                 autoCapitalize: 'none',
               }}
