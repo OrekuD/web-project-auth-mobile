@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     height: "90%",
     marginRight: normalizeX(16),
     color: colors.black,
-    fontSize: normalizeY(14)
+    fontSize: normalizeY(16)
   }
 });
 
@@ -46,7 +46,7 @@ const TextField = (props: Props) => {
     <View style={{ ...styles.container, ...props.containerStyle }}>
       <View style={styles.textInputContainer}>
         {props.leftIcon}
-        <TextInput style={styles.textInput} {...props.textInputProps} />
+        <TextInput style={styles.textInput} placeholderTextColor="grey" {...props.textInputProps} />
         {props.rightIcon}
       </View>
       {props?.error && props.error.length > 0 && (

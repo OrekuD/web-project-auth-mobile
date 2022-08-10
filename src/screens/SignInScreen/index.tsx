@@ -1,4 +1,4 @@
-import {StackScreenProps} from '@react-navigation/stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
 import {
   KeyboardAvoidingView,
@@ -8,22 +8,22 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useDispatch} from 'react-redux';
-import {RootStackParams} from '../../../types';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
+import { RootStackParams } from '../../../types';
 import Button from '../../components/Button';
-import {MailIcon, EyeCancelIcon, EyeIcon} from '../../components/Icons';
+import { MailIcon, EyeCancelIcon, EyeIcon } from '../../components/Icons';
 import TextField from '../../components/TextField';
 import Typography from '../../components/Typography';
-import {colors} from '../../constants';
+import { colors, isAndroid, screenheight } from '../../constants';
 import isAnyEmpty from '../../utils/isAnyEmpty';
-import {normalizeX, normalizeY} from '../../utils/normalize';
+import { normalizeX, normalizeY } from '../../utils/normalize';
 import API from '../../constants/api';
 import SignInRequest from '../../network/requests/SignInRequest';
-import {AxiosResponse} from 'axios';
+import { AxiosResponse } from 'axios';
 import AuthenticationResponse from '../../network/responses/AuthenticationResponse';
-import {authenticationActions} from '../../store/slices/authentication.slice';
-import {userActions} from '../../store/slices/user.slice';
+import { authenticationActions } from '../../store/slices/authentication.slice';
+import { userActions } from '../../store/slices/user.slice';
 import ErrorResponse from '../../network/responses/ErrorResponse';
 
 const styles = StyleSheet.create({
@@ -34,9 +34,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: normalizeX(24),
     paddingBottom: normalizeY(100),
   },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: normalizeY(16)
+  }
 });
 
-interface Props extends StackScreenProps<RootStackParams, 'SignInScreen'> {}
+interface Props extends StackScreenProps<RootStackParams, 'SignInScreen'> { }
 
 const SignInScreen = (props: Props) => {
   const [email, setEmail] = React.useState('');
@@ -44,7 +49,7 @@ const SignInScreen = (props: Props) => {
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-  const {top} = useSafeAreaInsets();
+  const { top } = useSafeAreaInsets();
 
   const dispatch = useDispatch();
 
@@ -75,7 +80,7 @@ const SignInScreen = (props: Props) => {
           accessToken: response.data.accessToken,
         }),
       );
-      dispatch(userActions.updateUser({user: response.data.user}));
+      dispatch(userActions.updateUser({ user: response.data.user }));
       setIsLoading(false);
       return response.data;
     } catch (error: any) {
@@ -88,20 +93,19 @@ const SignInScreen = (props: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView style={{flex: 1}} behavior="height">
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
       <ScrollView
         contentContainerStyle={{
-          flex: 1,
-          paddingTop: normalizeY(24) + top,
+          paddingTop: screenheight * 0.2 + top,
         }}
-        style={{backgroundColor: colors.white}}>
+        style={{ backgroundColor: colors.white }}>
         <View style={styles.container}>
           <Typography
             variant="h2"
             color={colors.primary}
             fontWeight={600}
             textAlign="center"
-            style={{marginBottom: normalizeY(24)}}>
+            style={{ marginBottom: normalizeY(24) }}>
             Welcome back
           </Typography>
           <TextField
@@ -154,12 +158,13 @@ const SignInScreen = (props: Props) => {
               </TouchableOpacity>
             }
           />
-          <Typography
-            variant="sm"
-            color={colors.black}
-            textAlign="center"
-            style={{marginBottom: normalizeY(16)}}>
-            Don't have an account?{' '}
+          <View style={styles.row}>
+            <Typography
+              variant="sm"
+              color={colors.black}
+              textAlign="center">
+              Don't have an account?
+            </Typography>
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => props.navigation.navigate('SignUpScreen')}>
@@ -167,11 +172,11 @@ const SignInScreen = (props: Props) => {
                 variant="sm"
                 color={colors.primary}
                 textAlign="center"
-                style={{marginTop: normalizeY(3)}}>
-                Create one
+              >
+                {' Create one'}
               </Typography>
             </TouchableOpacity>
-          </Typography>
+          </View>
           <Button
             label="Sign in"
             onPress={handleSubmit}

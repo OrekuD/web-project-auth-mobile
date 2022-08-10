@@ -7,28 +7,28 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useDispatch} from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
 import Button from '../../components/Button';
 import Typography from '../../components/Typography';
-import {colors} from '../../constants';
+import { colors, isAndroid } from '../../constants';
 import OkResponse from '../../network/responses/OkResponse';
-import {normalizeX, normalizeY} from '../../utils/normalize';
+import { normalizeX, normalizeY } from '../../utils/normalize';
 import API from '../../constants/api';
-import {AxiosResponse} from 'axios';
+import { AxiosResponse } from 'axios';
 import ErrorResponse from '../../network/responses/ErrorResponse';
-import {authenticationActions} from '../../store/slices/authentication.slice';
-import {userActions} from '../../store/slices/user.slice';
+import { authenticationActions } from '../../store/slices/authentication.slice';
+import { userActions } from '../../store/slices/user.slice';
 import {
   LockIcon,
   LogoutIcon,
   SettingsIcon,
   UserCircleIcon,
 } from '../../components/Icons';
-import {useSelectState} from '../../store/selectors';
-import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParams} from '../../../types';
-import {ActivityIndicator} from 'react-native';
+import { useSelectState } from '../../store/selectors';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParams } from '../../../types';
+import { ActivityIndicator } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -45,8 +45,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: normalizeX(16),
+    // borderWidth: isAndroid ? 1 : 0,
+    // borderColor: colors.grey,
+    elevation: 30,
     shadowColor: colors.grey,
-    shadowOffset: {width: 1, height: 1},
+    shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     marginBottom: normalizeY(14),
@@ -56,8 +59,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: normalizeY(150),
     borderRadius: normalizeY(12),
+    // borderWidth: isAndroid ? 1 : 0,
+    // borderColor: colors.grey,
+    elevation: 30,
     shadowColor: colors.grey,
-    shadowOffset: {width: 1, height: 1},
+    shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     alignItems: 'center',
@@ -70,13 +76,13 @@ const styles = StyleSheet.create({
   },
 });
 
-interface Props extends StackScreenProps<RootStackParams, 'ProfileScreen'> {}
+interface Props extends StackScreenProps<RootStackParams, 'ProfileScreen'> { }
 
 const ProfileScreen = (props: Props) => {
   const [isLoading, setIsLoading] = React.useState(false);
-  const {user} = useSelectState();
+  const { user } = useSelectState();
 
-  const {top} = useSafeAreaInsets();
+  const { top } = useSafeAreaInsets();
   const dispatch = useDispatch();
 
   const signOut = async () => {
@@ -102,14 +108,14 @@ const ProfileScreen = (props: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView style={{flex: 1}} behavior="height">
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
       <ScrollView
         contentContainerStyle={{
           flex: 1,
           paddingTop: normalizeY(24) + top,
           paddingHorizontal: normalizeX(24),
         }}
-        style={{backgroundColor: colors.white}}>
+        style={{ backgroundColor: colors.white }}>
         <View style={styles.profile}>
           <UserCircleIcon
             width={normalizeY(42)}
@@ -119,7 +125,7 @@ const ProfileScreen = (props: Props) => {
           <Typography
             variant="h1"
             color={colors.black}
-            style={{marginTop: normalizeY(6)}}>
+            style={{ marginTop: normalizeY(6) }}>
             {`${user.firstName} ${user.lastName}`}
           </Typography>
           <Typography variant="sm" color={colors.darkgrey}>
@@ -138,7 +144,7 @@ const ProfileScreen = (props: Props) => {
           <Typography
             variant="h1"
             color={colors.black}
-            style={{marginLeft: normalizeX(12)}}>
+            style={{ marginLeft: normalizeX(12) }}>
             Update profile
           </Typography>
         </TouchableOpacity>
@@ -154,7 +160,7 @@ const ProfileScreen = (props: Props) => {
           <Typography
             variant="h1"
             color={colors.black}
-            style={{marginLeft: normalizeX(12)}}>
+            style={{ marginLeft: normalizeX(12) }}>
             Change password
           </Typography>
         </TouchableOpacity>
@@ -166,7 +172,7 @@ const ProfileScreen = (props: Props) => {
             width={normalizeY(18)}
             height={normalizeY(18)}
             color={colors.black}
-            style={{marginRight: normalizeX(12)}}
+            style={{ marginRight: normalizeX(12) }}
           />
           {isLoading ? (
             <ActivityIndicator size="small" color={colors.black} />
